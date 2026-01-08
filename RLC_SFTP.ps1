@@ -1,5 +1,5 @@
-# RLC SFTP Script with Automatic Dependency Resolution
-# This version automatically loads all required dependencies for Renci.SshNet.dll
+# RLC SFTP Script for SSIS Package
+# Handles downloading files from SFTP server
 
 param(
     [Parameter(Mandatory=$true)]
@@ -40,211 +40,144 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $color
 }
 
-# Function to resolve assembly dependencies
-function Register-AssemblyResolver {
-    param([string]$DependenciesPath)
-    
-    if (-not (Test-Path $DependenciesPath)) {
-        Write-Log "Dependencies path not found: $DependenciesPath" "WARNING"
-        return
-    }
-    
-    # Register assembly resolver
-    Add-Type -TypeDefinition @"
-using System;
-using System.IO;
-using System.Reflection;
-
-public class AssemblyResolver {
-    private static string dependenciesPath;
-    
-    public static void Register(string path) {
-        dependenciesPath = path;
-        AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-    }
-    
-    private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) {
-        string assemblyName = new AssemblyName(args.Name).Name;
-        string dllPath = Path.Combine(dependenciesPath, assemblyName + ".dll");
-        
-        if (File.Exists(dllPath)) {
-            return Assembly.LoadFrom(dllPath);
-        }
-        
-        return null;
-    }
-}
-"@ -ReferencedAssemblies @("System.dll")
-    
-    [AssemblyResolver]::Register($DependenciesPath)
-    Write-Log "Assembly resolver registered for: $DependenciesPath" "INFO"
-}
-
-# Set up dependency resolution
-$dependenciesPath = "C:\RLC\Dependencies"
-if (Test-Path $dependenciesPath) {
-    Register-AssemblyResolver -DependenciesPath $dependenciesPath
-} else {
-    Write-Log "Dependencies directory not found. Creating it..." "WARNING"
-    New-Item -ItemType Directory -Path $dependenciesPath -Force | Out-Null
-    Write-Log "Please run Download-Dependencies.ps1 to download required DLLs" "WARNING"
-}
-
-# Find Renci.SshNet.dll
-$dllPaths = @(
-    "C:\RLCIntegration\RLCIntegration\bin\Renci.SshNet.dll",
-    "C:\RLCIntegration\RLCIntegration\bin\Development\Renci.SshNet.dll",
-    "RLCIntegration\bin\Renci.SshNet.dll",
-    "Renci.SshNet.dll"
-)
-
-$dllPath = $null
-foreach ($path in $dllPaths) {
-    if (Test-Path $path) {
-        $dllPath = (Resolve-Path $path).Path
-        break
-    }
-}
-
-if (-not $dllPath) {
-    Write-Log "ERROR: Renci.SshNet.dll not found" "ERROR"
-    Write-Log "Searched in: $($dllPaths -join ', ')" "ERROR"
-    exit 1
-}
-
-Write-Log "Found Renci.SshNet.dll at: $dllPath" "INFO"
 Write-Log "Starting SFTP operation: $Action" "INFO"
 Write-Log "Host: $Hostname`:$Port" "INFO"
 Write-Log "Remote Path: $RemotePath" "INFO"
 Write-Log "Remote File Pattern: $RemoteFileName" "INFO"
 
-try {
-    # Load Renci.SshNet.dll
-    Write-Log "Loading Renci.SshNet.dll..." "INFO"
-    $assembly = [System.Reflection.Assembly]::LoadFrom($dllPath)
-    Write-Log "Successfully loaded Renci.SshNet.dll" "SUCCESS"
+# Method 1: Try WinSCP (Recommended - most reliable)
+$winscpPath = "C:\Program Files\WinSCP\WinSCP.com"
+if (Test-Path $winscpPath) {
+    Write-Log "Using WinSCP command line" "INFO"
     
-    # Get types from loaded assembly
-    $connectionInfoType = $assembly.GetType("Renci.SshNet.ConnectionInfo")
-    $passwordAuthType = $assembly.GetType("Renci.SshNet.PasswordAuthenticationMethod")
-    $sftpClientType = $assembly.GetType("Renci.SshNet.SftpClient")
-    
-    if (-not $connectionInfoType -or -not $passwordAuthType -or -not $sftpClientType) {
-        Write-Log "ERROR: Could not load types from Renci.SshNet.dll. Missing dependencies." "ERROR"
-        Write-Log "Please ensure .NET Framework 4.7.2+ is installed or dependencies are in C:\RLC\Dependencies\" "ERROR"
-        exit 1
-    }
-    
-    # Create connection using reflection
-    $passwordAuth = [System.Activator]::CreateInstance($passwordAuthType, $Username, $Password)
-    $connectionInfo = [System.Activator]::CreateInstance($connectionInfoType, $Hostname, $Port, $Username, $passwordAuth)
-    $sftp = [System.Activator]::CreateInstance($sftpClientType, $connectionInfo)
-    
-    Write-Log "Connecting to SFTP server..." "INFO"
-    $connectMethod = $sftpClientType.GetMethod("Connect")
-    $connectMethod.Invoke($sftp, $null) | Out-Null
-    Write-Log "Connected successfully!" "SUCCESS"
-    
-    if ($Action -eq "Download") {
-        # Ensure local directory exists
-        $localDir = Split-Path $LocalPath -Parent
-        if (-not (Test-Path $localDir)) {
-            New-Item -ItemType Directory -Path $localDir -Force | Out-Null
-            Write-Log "Created directory: $localDir" "INFO"
-        }
+    try {
+        # Create WinSCP script
+        $scriptFile = "$env:TEMP\winscp_rlc_$(Get-Date -Format 'yyyyMMddHHmmss').txt"
         
-        # Download files using reflection
-        $listMethod = $sftpClientType.GetMethod("ListDirectory", [System.Type[]]@([string]))
-        $files = $listMethod.Invoke($sftp, @($RemotePath))
-        $downloaded = 0
-        $fileType = $files.GetType().GetElementType()
-        $isDirectoryProp = $fileType.GetProperty("IsDirectory")
-        $nameProp = $fileType.GetProperty("Name")
-        $fullNameProp = $fileType.GetProperty("FullName")
-        $downloadMethod = $sftpClientType.GetMethod("DownloadFile", [System.Type[]]@([string], [System.IO.Stream]))
-        
-        foreach ($file in $files) {
-            $isDir = $isDirectoryProp.GetValue($file)
-            $fileName = $nameProp.GetValue($file)
-            
-            if (-not $isDir -and $fileName -like $RemoteFileName) {
-                $localFilePath = if ($LocalPath -like "*.csv" -or $LocalPath -like "*.CSV") {
-                    $LocalPath
-                } else {
-                    Join-Path $LocalPath $fileName
-                }
-                
-                $stream = [System.IO.File]::Create($localFilePath)
-                $fullName = $fullNameProp.GetValue($file)
-                $downloadMethod.Invoke($sftp, @($fullName, $stream)) | Out-Null
-                $stream.Close()
-                Write-Log "Downloaded: $fileName -> $localFilePath" "SUCCESS"
-                $downloaded++
+        if ($Action -eq "Download") {
+            # Ensure local directory exists
+            $localDir = Split-Path $LocalPath -Parent
+            if (-not (Test-Path $localDir)) {
+                New-Item -ItemType Directory -Path $localDir -Force | Out-Null
+                Write-Log "Created directory: $localDir" "INFO"
             }
-        }
-        
-        if ($downloaded -eq 0) {
-            Write-Log "No files matching pattern '$RemoteFileName' found" "WARNING"
-            exit 1
-        } else {
-            Write-Log "Successfully downloaded $downloaded file(s)" "SUCCESS"
-        }
-    } else {
-        # List files using reflection
-        $listMethod = $sftpClientType.GetMethod("ListDirectory", [System.Type[]]@([string]))
-        $files = $listMethod.Invoke($sftp, @($RemotePath))
-        Write-Log "Files on server:" "INFO"
-        Write-Log ("=" * 70) "INFO"
-        
-        $fileType = $files.GetType().GetElementType()
-        $isDirectoryProp = $fileType.GetProperty("IsDirectory")
-        $nameProp = $fileType.GetProperty("Name")
-        $lengthProp = $fileType.GetProperty("Length")
-        $lastWriteTimeProp = $fileType.GetProperty("LastWriteTime")
-        
-        $csvFiles = @()
-        foreach ($file in $files) {
-            $isDir = $isDirectoryProp.GetValue($file)
-            $fileName = $nameProp.GetValue($file)
             
-            if (-not $isDir -and $fileName -notmatch '^\.\.?$') {
-                $fileLength = $lengthProp.GetValue($file)
-                $fileDate = $lastWriteTimeProp.GetValue($file)
-                $fileSize = [math]::Round($fileLength / 1KB, 2)
-                
-                $fileInfo = [PSCustomObject]@{
-                    Name = $fileName
-                    Size = $fileSize
-                    Modified = $fileDate
-                }
-                
-                if ($fileName -like "*.csv" -or $fileName -like "*.CSV") {
-                    $csvFiles += $fileInfo
-                }
-                
-                Write-Log "  $fileName - $fileSize KB - $fileDate" "INFO"
-            }
+            $scriptContent = @"
+option batch abort
+option confirm off
+open sftp://${Username}:${Password}@${Hostname}:${Port}/
+cd $RemotePath
+get $RemoteFileName $LocalPath
+exit
+"@
+        } else {
+            # List files
+            $scriptContent = @"
+option batch abort
+option confirm off
+open sftp://${Username}:${Password}@${Hostname}:${Port}/
+ls $RemotePath
+exit
+"@
         }
         
-        Write-Log ("=" * 70) "INFO"
-        if ($csvFiles.Count -gt 0) {
-            Write-Log "Found $($csvFiles.Count) CSV file(s)" "SUCCESS"
+        $scriptContent | Out-File -FilePath $scriptFile -Encoding ASCII -NoNewline
+        
+        # Execute WinSCP
+        $logFile = "$env:TEMP\winscp_rlc_log_$(Get-Date -Format 'yyyyMMddHHmmss').txt"
+        $process = Start-Process -FilePath $winscpPath -ArgumentList "/script=$scriptFile","/log=$logFile" -Wait -NoNewWindow -PassThru
+        
+        if ($process.ExitCode -eq 0) {
+            Write-Log "SFTP operation completed successfully" "SUCCESS"
+            
+            if ($Action -eq "List" -and (Test-Path $logFile)) {
+                Write-Log "Files on server:" "INFO"
+                Get-Content $logFile | Select-String -Pattern "\.csv|\.CSV" | ForEach-Object {
+                    Write-Log "  $_" "INFO"
+                }
+            }
+            
+            Remove-Item $scriptFile -ErrorAction SilentlyContinue
+            Remove-Item $logFile -ErrorAction SilentlyContinue
+            exit 0
         } else {
-            Write-Log "No CSV files found" "WARNING"
+            if (Test-Path $logFile) {
+                $errorContent = Get-Content $logFile -Raw
+                Write-Log "WinSCP Error: $errorContent" "ERROR"
+                Remove-Item $logFile -ErrorAction SilentlyContinue
+            }
+            throw "WinSCP exited with code: $($process.ExitCode)"
         }
+    } catch {
+        Write-Log "WinSCP failed: $_" "ERROR"
+        Remove-Item $scriptFile -ErrorAction SilentlyContinue
+        # Fall through to next method
     }
-    
-    $disconnectMethod = $sftpClientType.GetMethod("Disconnect")
-    $disconnectMethod.Invoke($sftp, $null) | Out-Null
-    Write-Log "Disconnected from server" "INFO"
-    exit 0
-    
-} catch {
-    Write-Log "ERROR: $_" "ERROR"
-    if ($_.Exception.InnerException) {
-        Write-Log "Inner Exception: $($_.Exception.InnerException.Message)" "ERROR"
-    }
-    Write-Log "Stack Trace: $($_.ScriptStackTrace)" "ERROR"
-    exit 1
 }
+
+# Method 2: Try Renci.SshNet.dll (if available and dependencies are resolved)
+$dllPaths = @(
+    "C:\RLCIntegration\RLCIntegration\bin\Renci.SshNet.dll",
+    "C:\RLCIntegration\RLCIntegration\bin\Development\Renci.SshNet.dll",
+    "Renci.SshNet.dll"
+)
+
+foreach ($dllPath in $dllPaths) {
+    if (Test-Path $dllPath) {
+        try {
+            Write-Log "Attempting to use Renci.SshNet.dll from: $dllPath" "INFO"
+            [System.Reflection.Assembly]::LoadFrom($dllPath) | Out-Null
+            
+            $connectionInfo = New-Object Renci.SshNet.ConnectionInfo($Hostname, $Port, $Username, 
+                (New-Object Renci.SshNet.PasswordAuthenticationMethod($Username, $Password)))
+            
+            $sftp = New-Object Renci.SshNet.SftpClient($connectionInfo)
+            
+            $sftp.Connect()
+            Write-Log "Connected via Renci.SshNet" "SUCCESS"
+            
+            if ($Action -eq "Download") {
+                # Download files
+                $files = $sftp.ListDirectory($RemotePath)
+                $downloaded = 0
+                
+                foreach ($file in $files) {
+                    if (-not $file.IsDirectory -and $file.Name -like $RemoteFileName) {
+                        $localFilePath = Join-Path (Split-Path $LocalPath -Parent) $file.Name
+                        $stream = [System.IO.File]::Create($localFilePath)
+                        $sftp.DownloadFile($file.FullName, $stream)
+                        $stream.Close()
+                        Write-Log "Downloaded: $($file.Name)" "SUCCESS"
+                        $downloaded++
+                    }
+                }
+                
+                if ($downloaded -eq 0) {
+                    Write-Log "No files matching pattern '$RemoteFileName' found" "WARNING"
+                }
+            } else {
+                # List files
+                $files = $sftp.ListDirectory($RemotePath)
+                Write-Log "Files on server:" "INFO"
+                foreach ($file in $files) {
+                    if (-not $file.IsDirectory) {
+                        Write-Log "  $($file.Name) - $([math]::Round($file.Length/1KB, 2)) KB - $($file.LastWriteTime)" "INFO"
+                    }
+                }
+            }
+            
+            $sftp.Disconnect()
+            exit 0
+        } catch {
+            Write-Log "Renci.SshNet failed: $_" "ERROR"
+            continue
+        }
+    }
+}
+
+# If we get here, no method worked
+Write-Log "ERROR: Could not connect to SFTP server" "ERROR"
+Write-Log "Please install WinSCP from: https://winscp.net/eng/download.php" "ERROR"
+Write-Log "Or ensure Renci.SshNet.dll dependencies are available" "ERROR"
+exit 1
 

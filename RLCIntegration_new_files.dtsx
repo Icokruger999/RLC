@@ -1,0 +1,747 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/20/2025 8:20:41 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="2000-409866-LAP"
+  DTS:CreatorName="KSA\Ico.Kruger"
+  DTS:DTSID="{EE946987-7755-4E37-A883-4705B0F24A0E}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1008.3"
+  DTS:LocaleID="7177"
+  DTS:ObjectName="RLCIntegration_new_files"
+  DTS:PackageType="5"
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{FDE591E3-2262-4D9B-A439-9F0AAFB6A16E}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[10.184.0.52.RMS]"
+      DTS:CreationName="OLEDB"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{361BCCAA-3C4E-47C1-AF0C-334D4FC566D7}"
+      DTS:ObjectName="10.184.0.52.RMS">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=10.184.0.52;Initial Catalog=RMS;Provider=SQLOLEDB.1;User ID=RLC_INT_App;Password=Exk15B97ky1zsvku;Application Name=SSIS-RLCIntegration_new_files-{361BCCAA-3C4E-47C1-AF0C-334D4FC566D7}10.184.0.52.RMS;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Flat File Source Connection Manager]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{F447120A-6551-4F1E-BA5E-608223272E19}"
+      DTS:ObjectName="Flat File Source Connection Manager">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[User::SourceFilePath]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="7177"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter="_x000D__x000A_"
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\RLCIntegration\RLC Aug-Oct\SA_20250818_12_57_22.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Trading Year"
+              DTS:DTSID="{AF4E655F-F8D6-4060-BB93-2569B9635A3E}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Trading Month"
+              DTS:DTSID="{0E2A0770-2AB8-43F4-9876-3625190956CC}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Trading Week"
+              DTS:DTSID="{16DE0CD4-675F-4CC7-848F-40ACCA9B7B82}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Trading Month Description"
+              DTS:DTSID="{A71EE54D-F94D-484D-8014-5D8F19576AF3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Store Format Code"
+              DTS:DTSID="{14D4A0E1-0576-467A-B8FA-3CDF793107C2}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="RegionCode"
+              DTS:DTSID="{2492F730-E83E-41AB-B26A-880C046FDE17}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Product Category Code"
+              DTS:DTSID="{1A83B331-D623-4373-B099-5D3D644B8054}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="131"
+              DTS:DataPrecision="38"
+              DTS:DataScale="2"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Retail Sales ExVAT"
+              DTS:DTSID="{07204E00-E544-434D-9BCA-D32146A15DD5}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="131"
+              DTS:DataPrecision="38"
+              DTS:DataScale="2"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Retail Sales Units"
+              DTS:DTSID="{EDF2D6EA-803C-4057-824F-6872F1CEC7CF}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="131"
+              DTS:DataPrecision="38"
+              DTS:DataScale="2"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Market Sales"
+              DTS:DTSID="{69A3981F-D466-474F-87BD-990C43868454}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:DataType="131"
+              DTS:DataPrecision="38"
+              DTS:DataScale="2"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Market Sales Units"
+              DTS:DTSID="{177B2200-0ECB-4288-BADC-3653D83457E0}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1FB017AB-CDE9-4F8A-8F10-0142A6B968FF}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceFileName">
+      <DTS:VariableValue
+        DTS:DataType="8">SA_20250818_12_57_22.csv</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{2B91E6D4-BA49-44C0-A85B-90AAA5069339}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;C:\\RLCIntegration\\RLC Aug-Oct\\&quot; +  @[User::SourceFileName]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceFilePath">
+      <DTS:VariableValue
+        DTS:DataType="8">C:\RLCIntegration\RLC Aug-Oct\SA_20250818_12_57_22.csv</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Load data from CSV to SQL"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{BDA7D65F-08D9-4906-B514-62FA7B5FBCA8}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load data from CSV to SQL"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Load data from CSV to SQL\OLE DB Destination"
+              componentClassID="Microsoft.OleDbDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="OLE DB Destination"
+              localeId="7177"
+              name="OLE DB Destination"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of rows that can be sent to the destination in a single batch."
+                  name="MaximumInsertCommitSize">0</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether the destination table will be checked for existence before data is inserted."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the table or view used by the destination."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the table or view used by the destination."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The fast load options to be used when inserting data."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether to keep the identity values from the imported data file."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether to keep null values from the imported data file."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of rows that can be committed in a single batch."
+                  name="FastLoadMaxInsertCommitSize">0</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether the destination table will be checked for existence before data is inserted."
+                  name="ValidateExternalMetadata">False</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load data from CSV to SQL\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[10.184.0.52.RMS]"
+                  connectionManagerRefId="Package.ConnectionManagers[10.184.0.52.RMS]"
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Trading Year]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="Trading Year"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Trading Year]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Year]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Trading Month]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="Trading Month"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Trading Month]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Month]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Trading Week]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="Trading Week"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Trading Week]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Week]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Trading Month Description]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Trading Month Description"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Trading Month Description]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Month Description]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Store Format Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Store Format Code"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Store Format Code]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Store Format Code]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RegionCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="RegionCode"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegionCode]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[RegionCode]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Product Category Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Product Category Code"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Product Category Code]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Product Category Code]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Retail Sales ExVAT]"
+                      cachedDataType="numeric"
+                      cachedName="Retail Sales ExVAT"
+                      cachedPrecision="38"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Retail Sales ExVAT]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Retail Sales ExVAT]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Retail Sales Units]"
+                      cachedDataType="numeric"
+                      cachedName="Retail Sales Units"
+                      cachedPrecision="38"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Retail Sales Units]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Retail Sales Units]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Market Sales]"
+                      cachedDataType="numeric"
+                      cachedName="Market Sales"
+                      cachedPrecision="38"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Market Sales]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Market Sales]" />
+                    <inputColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Market Sales Units]"
+                      cachedDataType="numeric"
+                      cachedName="Market Sales Units"
+                      cachedPrecision="38"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Market Sales Units]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Market Sales Units]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Trading Year]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="Trading Year" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Trading Month]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="Trading Month" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Trading Week]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="Trading Week" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Trading Month Description]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Trading Month Description" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Store Format Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Store Format Code" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="RegionCode" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Product Category Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Product Category Code" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Retail Sales ExVAT]"
+                      dataType="numeric"
+                      name="Retail Sales ExVAT"
+                      precision="38"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Retail Sales Units]"
+                      dataType="numeric"
+                      name="Retail Sales Units"
+                      precision="38"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Market Sales]"
+                      dataType="numeric"
+                      name="Market Sales"
+                      precision="38"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Market Sales Units]"
+                      dataType="numeric"
+                      name="Market Sales Units"
+                      precision="38"
+                      scale="2" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+            </component>
+            <component
+              refId="Package\Load data from CSV to SQL\Flat File Source"
+              componentClassID="Microsoft.FlatFileSource"
+              contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Source"
+              localeId="7177"
+              name="Flat File Source"
+              usesDispositions="true"
+              validateExternalMetadata="False"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether the flat file source will always check for row delimiters in the data."
+                  name="AlwaysCheckForRowDelimiters">true</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether the flat file source will always check for the row delimiter in the data."
+                  name="RetainNulls">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load data from CSV to SQL\Flat File Source.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Flat File Source Connection Manager]"
+                  connectionManagerRefId="Package.ConnectionManagers[Flat File Source Connection Manager]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output]"
+                  name="Flat File Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Year]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Trading Year]"
+                      length="10"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Year]"
+                      name="Trading Year"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Month]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Trading Month]"
+                      length="10"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Month]"
+                      name="Trading Month"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Week]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Trading Week]"
+                      length="10"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Week]"
+                      name="Trading Week"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Month Description]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Trading Month Description]"
+                      length="50"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Trading Month Description]"
+                      name="Trading Month Description"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Store Format Code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Store Format Code]"
+                      length="50"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Store Format Code]"
+                      name="Store Format Code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RegionCode]"
+                      length="50"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[RegionCode]"
+                      name="RegionCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Product Category Code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Product Category Code]"
+                      length="50"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Product Category Code]"
+                      name="Product Category Code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Retail Sales ExVAT]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail Sales ExVAT]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Retail Sales ExVAT]"
+                      name="Retail Sales ExVAT"
+                      precision="38"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Retail Sales Units]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail Sales Units]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Retail Sales Units]"
+                      name="Retail Sales Units"
+                      precision="38"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Market Sales]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Market Sales]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Market Sales]"
+                      name="Market Sales"
+                      precision="38"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Market Sales Units]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Market Sales Units]"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].Columns[Market Sales Units]"
+                      name="Market Sales Units"
+                      precision="38"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Trading Year]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="Trading Year" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Trading Month]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="Trading Month" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Trading Week]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="Trading Week" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Trading Month Description]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Trading Month Description" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Store Format Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Store Format Code" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RegionCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="RegionCode" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Product Category Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Product Category Code" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail Sales ExVAT]"
+                      dataType="numeric"
+                      name="Retail Sales ExVAT"
+                      precision="38"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail Sales Units]"
+                      dataType="numeric"
+                      name="Retail Sales Units"
+                      precision="38"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Market Sales]"
+                      dataType="numeric"
+                      name="Market Sales"
+                      precision="38"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Market Sales Units]"
+                      dataType="numeric"
+                      name="Market Sales Units"
+                      precision="38"
+                      scale="2" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Error Output]"
+                  isErrorOut="true"
+                  name="Flat File Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Error Output].Columns[Trading Year]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Error Output].Columns[Trading Year]"
+                      name="Trading Year" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Load data from CSV to SQL.Paths[Flat File Source Output]"
+              endId="Package\Load data from CSV to SQL\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Flat File Source Output"
+              startId="Package\Load data from CSV to SQL\Flat File Source.Outputs[Flat File Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<Objects
+  Version="8">
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="211,42"
+          Id="Package\Load data from CSV to SQL"
+          TopLeft="200,100" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Load data from CSV to SQL">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Load data from CSV to SQL\Flat File Source"
+          TopLeft="200,100" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\Load data from CSV to SQL\OLE DB Destination"
+          TopLeft="400,100" />
+        <EdgeLayout
+          Id="Package\Load data from CSV to SQL.Paths[Flat File Source Output]"
+          TopLeft="350,121">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="50,0"
+              Start="0,0"
+              End="50,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="50,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
