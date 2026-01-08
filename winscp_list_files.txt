@@ -1,0 +1,7 @@
+option batch abort
+option confirm off
+open sftp://9pq09noto4lkjl0jqhrr3cp417dmx3:xH%U!#Ga4VWLjbJzgLd!7Bn%34YUQj@20.86.180.225:8922/ -hostkey="ecdsa-sha2-nistp384 384 hI3gPQ+RWUmafmlSWXqxDpxAaXDcMWgT1/VbTQVOipI"
+cd /
+ls
+exit
+

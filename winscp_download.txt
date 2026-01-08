@@ -1,0 +1,7 @@
+option batch abort
+option confirm off
+open sftp://9pq09noto4lkjl0jqhrr3cp417dmx3:xH%U!#Ga4VWLjbJzgLd!7Bn%34YUQj@20.86.180.225:8922/
+cd /Aggregation/
+get *.CSV C:\RLC\
+exit
+
